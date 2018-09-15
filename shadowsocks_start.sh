@@ -53,4 +53,8 @@ iptables -t nat -A SS -d 192.168.0.0/16 -j RETURN
 iptables -t nat -A SS -d 224.0.0.0/4 -j RETURN
 iptables -t nat -A SS -d 240.0.0.0/4 -j RETURN
 iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
-iptables -t nat -A SS -p all -m set --match-set PROXY_DST dst -j REDIRECT --to-port 1080
+iptables -t nat -A SS -p udp  -j REDIRECT --to-port 1080
+iptables -t nat -A SS -p tcp  -j REDIRECT --to-port 1080
+iptables -t nat -A SS -p icmp  -j REDIRECT --to-port 1080
+iptables -t nat -A SS -p sctp  -j REDIRECT --to-port 1080
+
