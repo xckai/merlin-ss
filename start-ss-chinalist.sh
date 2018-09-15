@@ -1,5 +1,28 @@
-ipset -N gfwlist iphash
+ssredir=`pidof ss-redir`
+if [ -n "$ssredir" ];then 
+	echo_date 关闭ss-redir进程...
+	killall ss-redir >/dev/null 
+fi
+
+ipset destroy chnroute
+iptables -t nat -F SS
+iptables -t nat -X SS
+#prepare
+ipset -t nat -N gfwlist iphash
+ipset add chnroute 8.8.8.8
+ipset add chnroute 208.67.222.222
+ipset add chnroute 
+iptables -t nat -N SS
+iptables -t nat -A SS -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+iptables -t nat -A SS -p udp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+iptables -t nat -A PREROUTING -p tcp -j SS
+iptables -t nat -A PREROUTING -p udp -j SS
+
+
 iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+iptables -t nat -A PREROUTING -p udp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
+
+
 
 iptables -t nat -A PREROUTING -p tcp -s 192.168.1.0/24 -j REDIRECT --to-ports 1080
 
