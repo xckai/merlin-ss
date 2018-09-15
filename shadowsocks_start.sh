@@ -9,7 +9,7 @@ ipset destroy PROXY_DST
 ipset destroy DIRECT_DST
 ipset destroy REJECT_DST
 ipset -N PROXY_DST iphash
-ipset -N DIRECT_DST iphash
+ipset -N DIRECT_DST hash:net maxelem 65536
 ipset -N REJECT_DST iphash
 echo "Reset dnsmasq config"
 rm /jffs/configs/dnsmasq.conf.add
@@ -44,5 +44,13 @@ for rule in $(cat "$d/gfwlist.list"); do
 done
 service restart_dnsmasq
 echo "Add iptables rules"
+iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN
+iptables -t nat -A SS -d 10.0.0.0/8 -j RETURN
+iptables -t nat -A SS -d 127.0.0.0/8 -j RETURN
+iptables -t nat -A SS -d 169.254.0.0/16 -j RETURN
+iptables -t nat -A SS -d 172.16.0.0/12 -j RETURN
+iptables -t nat -A SS -d 192.168.0.0/16 -j RETURN
+iptables -t nat -A SS -d 224.0.0.0/4 -j RETURN
+iptables -t nat -A SS -d 240.0.0.0/4 -j RETURN
 iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
 iptables -t nat -A SS -p all -m set --match-set PROXY_DST dst -j REDIRECT --to-port 1080
