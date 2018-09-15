@@ -2,8 +2,8 @@ echo "Initialize iptable"
 iptables -t nat -F SS
 iptables -t nat -X SS
 iptables -t nat -N SS
-iptables -t nat -D OUTPUT -p tcp -j SS
-iptables -t nat -A OUTPUT -p udp -j SS
+iptables -t nat -D PREROUTING -p all -j SS
+
 echo "Initialize ipset"
 ipset destroy PROXY_DST
 ipset destroy DIRECT_DST
@@ -59,8 +59,7 @@ iptables -t nat -A SS -p udp  -j REDIRECT --to-port 1080
 iptables -t nat -A SS -p tcp  -j REDIRECT --to-port 1080
 
 
-iptables -t nat -A OUTPUT -p tcp -j SS
-iptables -t nat -A OUTPUT -p udp -j SS
+iptables -t nat -A PREROUTING -p all -j SS
 echo "All done"
 
 
