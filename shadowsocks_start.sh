@@ -28,13 +28,17 @@ nohup /opt/bin/ss-redir -c /opt/etc/shadowsocks.json -b 0.0.0.0 -u &
 
 echo "Add ipset rule"
 d=$(pwd)
-curl -o "$d/china.ip" https://raw.githubusercontent.com/xckai/merlin-ss/master/china.ip
 for ip in $(cat "$d/china.ip"); do
   ipset add DIRECT_DST $ip
 done
+echo "Add custome ipset rule"
+for ip in $(cat "$d/dst2direct.ip"); do
+  ipset add DIRECT_DST $ip
+done
+
+
 
 echo "Add dnsmasq rules"
-curl -o "$d/gfwlist.list" https://raw.githubusercontent.com/xckai/merlin-ss/master/gfwlist.list
 for rule in $(cat "$d/gfwlist.list"); do
   echo $rule>> /jffs/configs/dnsmasq.conf.add
 done
