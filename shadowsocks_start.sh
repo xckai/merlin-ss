@@ -2,8 +2,7 @@ echo "Initialize iptable"
 iptables -t nat -F SS
 iptables -t nat -X SS
 iptables -t nat -N SS
-iptables -t nat -A PREROUTING -p tcp -j SS
-iptables -t nat -A PREROUTING -p udp -j SS
+
 echo "Initialize ipset"
 ipset destroy PROXY_DST
 ipset destroy DIRECT_DST
@@ -26,15 +25,17 @@ fi
 echo "Start ss"
 nohup /opt/bin/ss-redir -c /opt/etc/shadowsocks.json -b 0.0.0.0 -u &
 
-echo "Add ipset rule"
+
 d=$(pwd)
+echo "Add custome ipset rule"
+for ip in $(cat "$d/dst2direct.ip"); do
+  iptables -t nat -A SS -d $ip -j RETURN
+done
+echo "Add ipset rule"
 for ip in $(cat "$d/china.ip"); do
   ipset add DIRECT_DST $ip
 done
-echo "Add custome ipset rule"
-for ip in $(cat "$d/dst2direct.ip"); do
-  ipset add DIRECT_DST $ip
-done
+
 
 
 
@@ -55,6 +56,11 @@ iptables -t nat -A SS -d 240.0.0.0/4 -j RETURN
 iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
 iptables -t nat -A SS -p udp  -j REDIRECT --to-port 1080
 iptables -t nat -A SS -p tcp  -j REDIRECT --to-port 1080
-iptables -t nat -A SS -p icmp  -j REDIRECT --to-port 1080
-iptables -t nat -A SS -p sctp  -j REDIRECT --to-port 1080
+
+
+iptables -t nat -A OUTPUT -p tcp -j SS
+iptables -t nat -A OUTPUT -p udp -j SS
+echo "All done"
+
+
 
