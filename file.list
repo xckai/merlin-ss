@@ -5,3 +5,4 @@ shadowsocks_stop.sh
 dst2direct.ip
 domain_block.txt
 host_block.txt
+custom_proxy.list

@@ -47,7 +47,7 @@ ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
 echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
 echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
 echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
-
+echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
 service restart_dnsmasqe
 echo "Add iptables rules"
 iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN
