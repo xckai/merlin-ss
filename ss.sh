@@ -9,7 +9,6 @@ stop(){
     ipset destroy DIRECT_DST
     ipset destroy REJECT_DST
     iptables -t nat -D PREROUTING -p all -j SS
-    iptables -t nat -D  OUTPUT  -p udp -d 8.8.8.8 -j REDIRECT --to-port 1080
     echo "reset dnsmasq"
     rm /jffs/configs/dnsmasq.conf
     rm "$d/dnsmasq.conf" 
@@ -49,15 +48,15 @@ startchinamode(){
     echo "add dnsmasq rules"
     cp /etc/dnsmasq.conf "$d/dnsmasq.conf"
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
- #   echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
- #   echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
+    echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
+    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
     rm "$d/gfwlist.list"
     for host in $(cat "$d/gfwlist.txt"); do
-        echo "server=/$host/8.8.8.8" >> "$d/gfwlist.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/gfwlist.list"
     done
     rm "$d/custom_proxy.list"
     for host in $(cat "$d/custom_proxy.txt"); do
-        echo "server=/$host/8.8.8.8" >> "$d/custom_proxy.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/custom_proxy.list"
     done
     echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
     echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
@@ -75,7 +74,6 @@ startchinamode(){
     iptables -t nat -A SS -p udp  -j REDIRECT --to-port 1080
     iptables -t nat -A SS -p tcp  -j REDIRECT --to-port 1080
     iptables -t nat -A PREROUTING -p all -j SS
-    iptables -t nat -A  OUTPUT  -p udp -d 8.8.8.8 -j REDIRECT --to-port 1080
     echo "All done"
 }
 
@@ -101,24 +99,23 @@ startgfwmode(){
     echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
     rm "$d/gfwlist.list"
     for host in $(cat "$d/gfwlist.txt"); do
-        echo "server=/$host/8.8.8.8" >> "$d/gfwlist.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/gfwlist.list"
         echo "ipset=/$host/PROXY_DST" >> "$d/gfwlist.list"
     done
     rm "$d/custom_proxy.list"
     for host in $(cat "$d/custom_proxy.txt"); do
-        echo "server=/$host/8.8.8.8" >> "$d/custom_proxy.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/custom_proxy.list"
         echo "ipset=/$host/PROXY_DST" >> "$d/gfwlist.list"
     done
     echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
     echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
-    echo "server=/#/223.5.5.5" >> "$d/dnsmasq.conf"
     service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
     iptables -t nat -A SS -p udp  -m set --match-set PROXY_DST dst  -j REDIRECT --to-port 1080
     iptables -t nat -A SS -p tcp  -m set --match-set PROXY_DST dst  -j REDIRECT --to-port 1080
     iptables -t nat -A PREROUTING -p all -j SS
-    iptables -t nat -A  OUTPUT  -p udp -d 8.8.8.8 -j REDIRECT --to-port 1080
+    
     echo "All done"
 
 }
