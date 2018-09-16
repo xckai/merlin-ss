@@ -1,3 +1,4 @@
+d=$(pwd)
 echo "Initialize iptable"
 iptables -t nat -F SS
 iptables -t nat -X SS
@@ -13,7 +14,8 @@ ipset -N DIRECT_DST hash:net maxelem 65536
 ipset -N REJECT_DST iphash
 echo "Reset dnsmasq config"
 rm /jffs/configs/dnsmasq.conf.add
-touch /jffs/configs/dnsmasq.conf.add
+rm /jffs/configs/dnsmasq.conf
+rm "$d/dnsmasq.conf" 
 echo "Initialize done"
 
 
@@ -41,12 +43,13 @@ done
 
 
 echo "Add dnsmasq rules"
+cp /etc/dnsmasq.conf "$d/dnsmasq.conf"
+ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
+echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
+echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
+echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
 
-echo "conf-file=$d/domain_block.txt" >> /jffs/configs/dnsmasq.conf.add
-echo "addn-hosts=$d/host_block.txt">>/jffs/configs/dnsmasq.conf.add
-echo "conf-file=$d/gfwlist.list">>/jffs/configs/dnsmasq.conf.add
-
-service restart_dnsmasq
+service restart_dnsmasqe
 echo "Add iptables rules"
 iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN
 iptables -t nat -A SS -d 10.0.0.0/8 -j RETURN
