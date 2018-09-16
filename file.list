@@ -1,8 +1,9 @@
-gfwlist.list
+gfwlist.txt
 china.ip
+ss.sh
 shadowsocks_start.sh
 shadowsocks_stop.sh
 dst2direct.ip
 domain_block.txt
 host_block.txt
-custom_proxy.list
+custom_proxy.txt
