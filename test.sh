@@ -1,6 +1,4 @@
-#! /bin/sh
 d=$(pwd)
-echo "$d/china.ip"
-for ip in $(cat "$d/china.ip"); do
-  echo $ip>>"$d/text"
+for host in $(cat "$d/custom_proxy.txt"); do
+        echo "server=/$host/8.8.8.8" >>"$d/custome"
 done
