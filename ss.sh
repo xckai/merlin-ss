@@ -48,18 +48,19 @@ startchinamode(){
     echo "add dnsmasq rules"
     cp /etc/dnsmasq.conf "$d/dnsmasq.conf"
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
-    echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
+    rm -r "$d/dnsmasq.d"
+    mkdir "$d/dnsmasq.d"
+    echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
     echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
-    rm "$d/gfwlist.list"
+   
     for host in $(cat "$d/gfwlist.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/gfwlist.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/gfwlist.list"
     done
-    rm "$d/custom_proxy.list"
+ 
     for host in $(cat "$d/custom_proxy.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/custom_proxy.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/custom_proxy.list"
     done
-    echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
-    echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
+  
     service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN
@@ -95,20 +96,19 @@ startgfwmode(){
     echo "add dnsmasq rules"
     cp /etc/dnsmasq.conf "$d/dnsmasq.conf"
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
-    echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
+    rm -r "$d/dnsmasq.d"
+    mkdir "$d/dnsmasq.d"
+    echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
     echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
-    rm "$d/gfwlist.list"
     for host in $(cat "$d/gfwlist.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/gfwlist.list"
-        echo "ipset=/$host/PROXY_DST" >> "$d/gfwlist.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/gfwlist.list"
+        echo "ipset=/$host/PROXY_DST" >> "$d/dnsmasq.d/gfwlist.list"
     done
-    rm "$d/custom_proxy.list"
     for host in $(cat "$d/custom_proxy.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/custom_proxy.list"
-        echo "ipset=/$host/PROXY_DST" >> "$d/gfwlist.list"
+        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/custom_proxy.list"
+        echo "ipset=/$host/PROXY_DST" >> "$d/dnsmasq.d/custom_proxy.list"
     done
-    echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
-    echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
+  
     service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
