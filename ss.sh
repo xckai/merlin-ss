@@ -61,7 +61,8 @@ startchinamode(){
     done
     echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
     echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
-    service restart_dnsmasqe
+    echo "server=/#/223.5.5.5" >> "$d/dnsmasq.conf"
+    service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN
     iptables -t nat -A SS -d 10.0.0.0/8 -j RETURN
@@ -111,7 +112,8 @@ startgfwmode(){
     done
     echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
     echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
-    service restart_dnsmasqe
+    echo "server=/#/223.5.5.5" >> "$d/dnsmasq.conf"
+    service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
     iptables -t nat -A SS -p udp  -m set --match-set PROXY_DST dst  -j REDIRECT --to-port 1080
