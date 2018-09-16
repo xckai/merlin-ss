@@ -34,11 +34,12 @@ startchinamode(){
 
     echo "add custome ipset rule"
     for ip in $(cat "$d/dst2direct.ip"); do
-        iptables -t nat -A SS -d $ip -j RETURN
+        ipset add DIRECT_DST $ip
     done
     for ip in $(cat "$d/dst2proxy.ip"); do
-        iptables -t nat -A SS -d $ip -p udp  -j REDIRECT --to-port 1080
-        iptables -t nat -A SS -d $ip -p tcp  -j REDIRECT --to-port 1080
+        ipset add PROXY_DST $ip
+#        iptables -t nat -A SS -d $ip -p udp  -j REDIRECT --to-port 1080
+#        iptables -t nat -A SS -d $ip -p tcp  -j REDIRECT --to-port 1080
     done
     echo "add ipset rule"
     for ip in $(cat "$d/china.ip"); do
@@ -86,11 +87,13 @@ startgfwmode(){
 
     echo "add custome ipset rule"
     for ip in $(cat "$d/dst2direct.ip"); do
-        iptables -t nat -A SS -d $ip -j RETURN
+        ipset add DIRECT_DST $ip
+#        iptables -t nat -A SS -d $ip -j RETURN
     done
     for ip in $(cat "$d/dst2proxy.ip"); do
-        iptables -t nat -A SS -d $ip -p udp  -j REDIRECT --to-port 1080
-        iptables -t nat -A SS -d $ip -p tcp  -j REDIRECT --to-port 1080
+        ipset add PROXY_DST $ip
+#        iptables -t nat -A SS -d $ip -p udp  -j REDIRECT --to-port 1080
+#        iptables -t nat -A SS -d $ip -p tcp  -j REDIRECT --to-port 1080
     done
    
     echo "add dnsmasq rules"
