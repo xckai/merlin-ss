@@ -49,8 +49,8 @@ startchinamode(){
     echo "add dnsmasq rules"
     cp /etc/dnsmasq.conf "$d/dnsmasq.conf"
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
-    echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
-    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
+ #   echo "conf-file=$d/domain_block.txt" >> "$d/dnsmasq.conf"
+ #   echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
     rm "$d/gfwlist.list"
     for host in $(cat "$d/gfwlist.txt"); do
         echo "server=/$host/8.8.8.8" >> "$d/gfwlist.list"
@@ -61,7 +61,6 @@ startchinamode(){
     done
     echo "conf-file=$d/gfwlist.list">> "$d/dnsmasq.conf"
     echo "conf-file=$d/custom_proxy.list">> "$d/dnsmasq.conf"
-    echo "server=/#/223.5.5.5" >> "$d/dnsmasq.conf"
     service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN
