@@ -3,7 +3,7 @@ echo "Initialize iptable"
 iptables -t nat -F SS
 iptables -t nat -X SS
 iptables -t nat -N SS
-iptables -t nat -D PREROUTING -p all -j SS
+iptables -t nat -D OUTPUT -p all -j SS
 
 echo "Initialize ipset"
 ipset destroy PROXY_DST
@@ -38,7 +38,6 @@ echo "Add ipset rule"
 for ip in $(cat "$d/china.ip"); do
   ipset add DIRECT_DST $ip
 done
-
 
 
 
