@@ -24,7 +24,7 @@ if [ -n "$ssredir" ];then
 	killall ss-redir >/dev/null 
 fi
 echo "Start ss"
-nohup /opt/bin/ss-redir -c /opt/etc/shadowsocks.json -b 0.0.0.0 -u &
+nohup /opt/bin/ss-redir -c /opt/etc/shadowsocks.json -b 0.0.0.0 -u >/dev/null 2>&1  &
 
 
 d=$(pwd)
@@ -41,9 +41,11 @@ done
 
 
 echo "Add dnsmasq rules"
-for rule in $(cat "$d/gfwlist.list"); do
-  echo $rule>> /jffs/configs/dnsmasq.conf.add
-done
+
+echo "conf-file=$d/domain_block.txt" >> /jffs/configs/dnsmasq.conf.add
+echo "addn-hosts=$d/host_block.txt">>/jffs/configs/dnsmasq.conf.add
+echo "conf-file=$d/gfwlist.list">>/jffs/configs/dnsmasq.conf.add
+
 service restart_dnsmasq
 echo "Add iptables rules"
 iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN

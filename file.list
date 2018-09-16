@@ -3,3 +3,5 @@ china.ip
 shadowsocks_start.sh
 shadowsocks_stop.sh
 dst2direct.ip
+domain_block.txt
+host_block.txt
