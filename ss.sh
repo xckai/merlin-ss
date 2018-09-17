@@ -29,7 +29,7 @@ init(){
 startchinamode(){
     stop
     init
-    echo "start ss"
+    echo "start ss in chinaroute mode"
     nohup /opt/bin/ss-redir -c /opt/etc/shadowsocks.json -b 0.0.0.0 -u >/dev/null 2>&1  &
 
     echo "add custome ipset rule"
@@ -51,16 +51,9 @@ startchinamode(){
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
     rm -r "$d/dnsmasq.d"
     mkdir "$d/dnsmasq.d"
-    echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
-    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
-   
-    for host in $(cat "$d/gfwlist.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/gfwlist.list"
-    done
- 
-    for host in $(cat "$d/custom_proxy.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/custom_proxy.list"
-    done
+    ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
+    ls -s "$d/gfwlist_china.list" "$d/dnsmasq.d/gfwlist.list"
+    ls -s "$d/custom_proxy_china.list" "$d/dnsmasq.d/custom_proxy.list"
   
     service restart_dnsmasq
     echo "Add iptables rules"
@@ -82,7 +75,7 @@ startchinamode(){
 startgfwmode(){
     stop
     init
-    echo "start ss"
+    echo "start ss in gfw mode"
     nohup /opt/bin/ss-redir -c /opt/etc/shadowsocks.json -b 0.0.0.0 -u >/dev/null 2>&1  &
 
     echo "add custome ipset rule"
@@ -101,17 +94,11 @@ startgfwmode(){
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
     rm -r "$d/dnsmasq.d"
     mkdir "$d/dnsmasq.d"
+    ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
+    ls -s "$d/gfwlist_gfw.list" "$d/dnsmasq.d/gfwlist.list"
+    ls -s "$d/custom_proxy_gfw.list" "$d/dnsmasq.d/custom_proxy.list"
     echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
-    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
-    for host in $(cat "$d/gfwlist.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/gfwlist.list"
-        echo "ipset=/$host/PROXY_DST" >> "$d/dnsmasq.d/gfwlist.list"
-    done
-    for host in $(cat "$d/custom_proxy.txt"); do
-        echo "server=/$host/208.67.222.222#5353" >> "$d/dnsmasq.d/custom_proxy.list"
-        echo "ipset=/$host/PROXY_DST" >> "$d/dnsmasq.d/custom_proxy.list"
-    done
-  
+    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"  
     service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
