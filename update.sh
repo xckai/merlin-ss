@@ -47,7 +47,7 @@ update_custom(){
     done
 }
 start_ss(){
-    ./ss.sh startgfwmode
+    ./ss.sh gfwmode
 }
 case "$1" in
         chinaip)

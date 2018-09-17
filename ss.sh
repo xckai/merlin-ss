@@ -110,7 +110,7 @@ startgfwmode(){
 
 }
 case "$1" in
-        startchinamode)
+        chinamode)
             startchinamode
             ;;
          
@@ -118,11 +118,11 @@ case "$1" in
             stop
             ;;
          
-        startgfwmode)
+        gfwmode)
             startgfwmode
             ;;
         *)
-            echo $"Usage: $0 {startchinamode|startgfwmode|stop|install}"
+            echo $"Usage: $0 {chinamode|gfwmode|stop}"
             exit 1
  
 esac 

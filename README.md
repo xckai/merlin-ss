@@ -7,9 +7,11 @@
 ##### Install entware-ng
 >https://blog.bluerain.io/p/AsusWrt-Merlin.html
 ##### Install ss by using entware
->Login router using SSH
->opkg update
->opkg install shadowsocks-libev-ss-redir
+> Login router using SSH
+
+> opkg update
+
+> opkg install shadowsocks-libev-ss-redir
 ##### Config your ss
 > vi /opt/etc/shadowsocks.json 
 > input your ss config,keep ss local port 1080
