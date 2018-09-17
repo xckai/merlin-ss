@@ -14,7 +14,9 @@
 > vi /opt/etc/shadowsocks.json 
 > input your ss config,keep ss local port 1080
 ### Quick install
-> curl https://raw.githubusercontent.com/xckai/merlin-ss/master/install.sh | sh
+> - Login your router using SSH, change directory to /opt/etc
+> - curl https://raw.githubusercontent.com/xckai/merlin-ss/master/install.sh | sh
+
 
 ### Quick start
   - using `ss.sh gfwmode `to start (!!! if you using chinamode, you should add your ss-server ip into dst2proxy file)
