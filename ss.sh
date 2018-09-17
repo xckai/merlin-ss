@@ -50,7 +50,7 @@ startchinamode(){
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
     rm -r "$d/dnsmasq.d"
     mkdir "$d/dnsmasq.d"
-    ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
+#    ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
     ln -s "$d/gfwlist_china.list" "$d/dnsmasq.d/gfwlist.list"
     ln -s "$d/custom_proxy_china.list" "$d/dnsmasq.d/custom_proxy.list"
   
@@ -93,7 +93,7 @@ startgfwmode(){
     ln -s "$d/dnsmasq.conf" /jffs/configs/dnsmasq.conf
     rm -r "$d/dnsmasq.d"
     mkdir "$d/dnsmasq.d"
-    ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
+#    ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
     ln -s "$d/gfwlist_gfw.list" "$d/dnsmasq.d/gfwlist.list"
     ln -s "$d/custom_proxy_gfw.list" "$d/dnsmasq.d/custom_proxy.list"
     echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
