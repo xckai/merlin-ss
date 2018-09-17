@@ -15,7 +15,7 @@ update_adblock(){
 }
 update_sh(){
     rm "$d/ss.sh"
-    curl -o "$d/$file" "https://raw.githubusercontent.com/xckai/merlin-ss/master/ss.sh"
+    curl -o "$d/ss.sh" "https://raw.githubusercontent.com/xckai/merlin-ss/master/ss.sh"
     chmod +x "$d/ss.sh"
 }
 update_gfw(){
@@ -47,7 +47,7 @@ update_custom(){
     done
 }
 start_ss(){
-    ./ss.sh gfwmode
+    "$d/ss.sh" gfwmode
 }
 case "$1" in
         chinaip)
@@ -64,11 +64,11 @@ case "$1" in
             update_custom
             ;;
         all)
+            update_sh
             update_chinaip
             update_gfw
             update_adblock
             update_custom
-            start_ss
             ;;
         *)
             echo $"Usage: $0 {chinaip|gfw|adblock|custom|all}"

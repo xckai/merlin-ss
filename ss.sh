@@ -2,7 +2,6 @@
 d=$(pwd)
 stop(){
     echo "stopping all"
-    echo "reset iptables $ ipset"
     iptables -t nat -F SS
     iptables -t nat -X SS
     ipset destroy PROXY_DST
@@ -52,8 +51,8 @@ startchinamode(){
     rm -r "$d/dnsmasq.d"
     mkdir "$d/dnsmasq.d"
     ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
-    ls -s "$d/gfwlist_china.list" "$d/dnsmasq.d/gfwlist.list"
-    ls -s "$d/custom_proxy_china.list" "$d/dnsmasq.d/custom_proxy.list"
+    ln -s "$d/gfwlist_china.list" "$d/dnsmasq.d/gfwlist.list"
+    ln -s "$d/custom_proxy_china.list" "$d/dnsmasq.d/custom_proxy.list"
   
     service restart_dnsmasq
     echo "Add iptables rules"
@@ -95,8 +94,8 @@ startgfwmode(){
     rm -r "$d/dnsmasq.d"
     mkdir "$d/dnsmasq.d"
     ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
-    ls -s "$d/gfwlist_gfw.list" "$d/dnsmasq.d/gfwlist.list"
-    ls -s "$d/custom_proxy_gfw.list" "$d/dnsmasq.d/custom_proxy.list"
+    ln -s "$d/gfwlist_gfw.list" "$d/dnsmasq.d/gfwlist.list"
+    ln -s "$d/custom_proxy_gfw.list" "$d/dnsmasq.d/custom_proxy.list"
     echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
     echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"  
     service restart_dnsmasq
