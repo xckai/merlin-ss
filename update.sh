@@ -63,6 +63,9 @@ case "$1" in
         custom)
             update_custom
             ;;
+        ss)
+            update_sh
+            ;;
         all)
             update_sh
             update_chinaip
@@ -71,7 +74,7 @@ case "$1" in
             update_custom
             ;;
         *)
-            echo $"Usage: $0 {chinaip|gfw|adblock|custom|all}"
+            echo $"Usage: $0 {ss|adblock|gfw|chinaip|all}"
             exit 1
  
 esac 
