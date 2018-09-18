@@ -70,7 +70,6 @@ case "$1" in
             update_sh
             update_chinaip
             update_gfw
-            update_adblock
             update_custom
             ;;
         *)
