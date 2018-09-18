@@ -53,7 +53,8 @@ startchinamode(){
 #    ln -s "$d/domain_block.txt" "$d/dnsmasq.d/domain_block.txt"
     ln -s "$d/gfwlist_china.list" "$d/dnsmasq.d/gfwlist.list"
     ln -s "$d/custom_proxy_china.list" "$d/dnsmasq.d/custom_proxy.list"
-  
+#    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"
+    echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
     service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -d 0.0.0.0/8 -j RETURN
@@ -97,7 +98,7 @@ startgfwmode(){
     ln -s "$d/gfwlist_gfw.list" "$d/dnsmasq.d/gfwlist.list"
     ln -s "$d/custom_proxy_gfw.list" "$d/dnsmasq.d/custom_proxy.list"
     echo "conf-dir=$d/dnsmasq.d">> "$d/dnsmasq.conf"
-    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"  
+#    echo "addn-hosts=$d/host_block.txt">> "$d/dnsmasq.conf"  
     service restart_dnsmasq
     echo "Add iptables rules"
     iptables -t nat -A SS -p all -m set --match-set DIRECT_DST dst -j RETURN
