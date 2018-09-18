@@ -23,3 +23,6 @@
   - you could add update.sh in to a crontab task ,it will update both gfwlist and adblock list by scheduled.
   - you could edit dst2proxy/dst2direct file to custom your router rules.
   - all the domain in proxy.domain file will focused using ss proxy.
+### Feature
+  - support gfwmode and chinaroute mode
+  - disable adblock because the domain_block file is too large, it cost too mush resource and suspend the DNSMASQ service. Recommand using pi-hole instead.
