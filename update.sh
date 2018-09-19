@@ -19,12 +19,13 @@ update_sh(){
     chmod +x "$d/ss.sh"
 }
 update_gfw(){
+    echo 'update gfw file'
     rm "$d/gfwlist.txt"
     curl -o "$d/gfwlist.txt" "https://cokebar.github.io/gfwlist2dnsmasq/gfwlist_domain.txt"
     rm "$d/gfwlist_gfw.list"
     rm "$d/gfwlist_china.list"
     for host in $(cat "$d/gfwlist.txt"); do
-        if [ -f "$d/direct.domain"];
+        if [ -f "$d/direct.domain" ];
         then
             find=false
             for direct in $(cat "$d/direct.domain");do 
@@ -46,6 +47,7 @@ update_gfw(){
     done    
 }
 update_custom(){
+    echo "update custom file"
     for file in 'dst2direct.ip' 'dst2proxy.ip' 'proxy.domain' 'direct.domain'; do
         curl -o "$d/$file" "https://raw.githubusercontent.com/xckai/merlin-ss/master/$file"
     done
