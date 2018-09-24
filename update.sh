@@ -48,12 +48,12 @@ update_gfw(){
 }
 update_custom(){
     echo "update custom file"
-    for file in 'dst2direct.ip' 'dst2proxy.ip' 'proxy.domain' 'direct.domain'; do
+    for file in 'dst2direct.ip' 'dst2proxy.ip' 'proxy.domain' 'direct.domain' 'ssconfig.sh'; do
         curl -o "$d/$file" "https://raw.githubusercontent.com/xckai/merlin-ss/master/$file"
     done
     rm "$d/custom_proxy_gfw.list"
     rm "$d/custom_proxy_china.list"
-    for host in $(cat "$d/proxy.domain"); do
+    for host in $(cat "$d/proxy.domain"); doß
         echo "server=/$host/$remote_dns" >> "$d/custom_proxy_gfw.list"
         echo "ipset=/$host/PROXY_DST" >> "$d/custom_proxy_gfw.list"
         echo "server=/$host/$remote_dns" >> "$d/custom_proxy_china.list"
