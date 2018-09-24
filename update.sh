@@ -1,7 +1,7 @@
 
 ./ss.sh stop
 d=$(pwd)
-remote_dns='208.67.222.222#5353'
+remote_dns='127.0.0.1#5353'
 
 update_chinaip(){
     rm "$d/china.ip"
