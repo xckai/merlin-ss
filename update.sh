@@ -53,7 +53,7 @@ update_custom(){
     done
     rm "$d/custom_proxy_gfw.list"
     rm "$d/custom_proxy_china.list"
-    for host in $(cat "$d/proxy.domain"); doß
+    for host in $(cat "$d/proxy.domain"); do
         echo "server=/$host/$remote_dns" >> "$d/custom_proxy_gfw.list"
         echo "ipset=/$host/PROXY_DST" >> "$d/custom_proxy_gfw.list"
         echo "server=/$host/$remote_dns" >> "$d/custom_proxy_china.list"
