@@ -54,7 +54,7 @@ startgfwmode(){
     for ip in $(cat "$d/dst2direct.ip"); do
         ipset add DIRECT_DST $ip
 #        iptables -t nat -A SS -d $ip -j RETURN
-    donels
+    done
     for ip in $(cat "$d/dst2proxy.ip"); do
         ipset add PROXY_DST $ip
 #        iptables -t nat -A SS -d $ip -p udp  -j REDIRECT --to-port 1080
@@ -82,7 +82,7 @@ startgfwmode(){
 
 }
 startchinamode(){
-#     stop
+      stop
 #     init
 #     echo "start ss in chinaroute mode"
 #     nohup /opt/bin/ss-redir -c /opt/etc/shadowsocks.json -b 0.0.0.0 -u >/dev/null 2>&1  &
