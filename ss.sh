@@ -29,6 +29,7 @@ init(){
     ipset -N PROXY_DST hash:net maxelem 65536
     ipset -N DIRECT_DST hash:net maxelem 65536
     ipset -N REJECT_DST iphash
+    source ./ssconfig.sh
 }
 startSS(){
     ssredir=`pidof ss-redir`
@@ -48,7 +49,7 @@ startgfwmode(){
     stop
     init
     echo "start ss in gfw mode"
-    source ./ssconfig.sh
+   
     startSS
     echo "add custome ipset rule"
     for ip in $(cat "$d/dst2direct.ip"); do
@@ -130,7 +131,7 @@ startchinamode(){
 
 
 case "$1" in
-        restartss)
+        restart)
             startSS
             ;;
          
@@ -138,11 +139,11 @@ case "$1" in
             stop
             ;;
          
-        restart)
+        reset)
             startgfwmode
             ;;
         *)
-            echo $"Usage: $0 {restart|startSS|stop}"
+            echo $"Usage: $0 {restart|reset|stop}"
             exit 1
  
 esac 
