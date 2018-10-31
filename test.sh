@@ -11,3 +11,4 @@ for host in '1' '2' '3'; do
                 echo $host
         fi
 done
+export test=1;

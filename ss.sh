@@ -29,7 +29,6 @@ init(){
     ipset -N PROXY_DST hash:net maxelem 65536
     ipset -N DIRECT_DST hash:net maxelem 65536
     ipset -N REJECT_DST iphash
-    source ./ssconfig.sh
 }
 startSS(){
     ssredir=`pidof ss-redir`
@@ -128,8 +127,15 @@ startchinamode(){
 #     iptables -t nat -A PREROUTING -p all -j SS
 #     echo "All done"
 }
-
-
+reconfig(){
+    
+    if [ -n "$1" ]; then 
+        source "$1"
+    else
+        source "./ssconfig.sh"
+    fi
+}
+cd "$(dirname "$0")"
 case "$1" in
         restart)
             startSS
@@ -142,8 +148,11 @@ case "$1" in
         reset)
             startgfwmode
             ;;
+        reconfig)
+            reconfig "$2"
+            ;;
         *)
-            echo $"Usage: $0 {restart|reset|stop}"
+            echo $"Usage: $0 {restart|reset|stop|reconfig}"
             exit 1
  
 esac 
