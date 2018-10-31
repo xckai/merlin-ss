@@ -50,14 +50,16 @@ startSS(){
         echo "关闭ss-tunnel进程..."
         killall ss-tunnel >/dev/null 
     fi
+    echo "starting SS"
     nohup /opt/bin/ss-redir -s $mainserver -p $mainserverport -m $encroptmethod -k $mainserverpwd -l 1080 -b 0.0.0.0 -u >/dev/null 2>&1  &
     nohup /opt/bin/ss-tunnel -s $dnsserver -p $dnsserverport -m $dnsencroptmethod -k $dnsserverpwd -l 5353 -v -b 0.0.0.0 -L 8.8.8.8:53 -u >/dev/null 2>&1  &
+    echo "SS started" 
 }
 startgfwmode(){
     stop
     init
     echo "start ss in gfw mode"
-    reconfig
+    reconfig "$1"
     startSS
     echo "add custome ipset rule"
     for ip in $(cat "$d/dst2direct.ip"); do
@@ -149,7 +151,7 @@ case "$1" in
             ;;
          
         reset)
-            startgfwmode
+            startgfwmode "$2"
             ;;
         *)
             echo $"Usage: $0 {restart|reset|stop}"
