@@ -30,6 +30,15 @@ init(){
     ipset -N DIRECT_DST hash:net maxelem 65536
     ipset -N REJECT_DST iphash
 }
+reconfig(){
+    
+    if [ -n "$1" ]; then 
+        source "$1"
+    else
+        source "./ssconfig.sh"
+    fi
+    echo "$mainserver"
+}
 startSS(){
     ssredir=`pidof ss-redir`
     if [ -n "$ssredir" ];then 
@@ -48,7 +57,7 @@ startgfwmode(){
     stop
     init
     echo "start ss in gfw mode"
-   
+    reconfig
     startSS
     echo "add custome ipset rule"
     for ip in $(cat "$d/dst2direct.ip"); do
@@ -127,17 +136,11 @@ startchinamode(){
 #     iptables -t nat -A PREROUTING -p all -j SS
 #     echo "All done"
 }
-reconfig(){
-    
-    if [ -n "$1" ]; then 
-        source "$1"
-    else
-        source "./ssconfig.sh"
-    fi
-}
+
 cd "$(dirname "$0")"
 case "$1" in
         restart)
+            reconfig "$2"
             startSS
             ;;
          
@@ -148,11 +151,8 @@ case "$1" in
         reset)
             startgfwmode
             ;;
-        reconfig)
-            reconfig "$2"
-            ;;
         *)
-            echo $"Usage: $0 {restart|reset|stop|reconfig}"
+            echo $"Usage: $0 {restart|reset|stop}"
             exit 1
  
 esac 
