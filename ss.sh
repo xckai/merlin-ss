@@ -6,7 +6,7 @@ stop(){
     iptables -t nat -X SS
     ipset destroy PROXY_DST
     ipset destroy DIRECT_DST
-    ipset destroy REJECT_DST
+  
     iptables -t nat -D PREROUTING -p all -j SS
     echo "reset dnsmasq"
     rm /jffs/configs/dnsmasq.conf
@@ -28,7 +28,6 @@ init(){
     iptables -t nat -N SS
     ipset -N PROXY_DST hash:net maxelem 65536
     ipset -N DIRECT_DST hash:net maxelem 65536
-    ipset -N REJECT_DST iphash
 }
 reconfig(){
     
