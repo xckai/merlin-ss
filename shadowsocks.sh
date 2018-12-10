@@ -40,11 +40,12 @@ startRouter(){
 }
 stopRouter(){
     echo 'Reset router config  --begin'
+    iptables -t nat -D PREROUTING -p all -j SS
     iptables -t nat -F SS
     iptables -t nat -X SS
     ipset destroy PROXY_DST
     ipset destroy DIRECT_DST
-    iptables -t nat -D PREROUTING -p all -j SS
+    
     rm /jffs/configs/dnsmasq.conf
     rm "$d/dnsmasq.conf"
     service restart_dnsmasq 
@@ -110,6 +111,14 @@ updateCustomProxy(){
     done
     echo "Upate custome proxy domain list --done"
 }
+restartSS(){
+    stopSS
+    startSS "$1"
+}
+reconfigRouter(){
+    stopRouter
+    startRouter
+}
 cd "$(dirname "$0")"
 case "$1" in
         startRouter)
@@ -132,8 +141,20 @@ case "$1" in
         updateCustomProxy)
             updateCustomProxy
             ;;
+        restartSS)
+            restartSS
+            ;;
         *)
-            echo $"Usage: $0 {startRouter|stopRouter|startSS|stopSS|updateGFWFile|updateCustomProxy}"
+            echo $"Usage: $0 {startRouter|stopRouter|startSS|stopSS|updateGFWFile|updateCustomProxy|restartSS|reconfigRouter}
+                            startRouter----Config router's iptable enable customer's rules;
+                            stopRouter-----Rest router's iptables clear custmer's rules';
+                            startSS--------Start shadowsocks process;
+                            stopSS --------Stop shadowsocks process;
+                            updateGFWFile--Update GFW rules;
+                            updateCustomProxy--Update customer's rules;
+                            restartSS -----Stop then start shadowsocks process;
+                            reconfigRouter-Rest then reconfig router's customer's iptables rules;
+            "
             exit 1
  
 esac 

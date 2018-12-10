@@ -10,19 +10,23 @@
 > - Login router using SSH
 > - opkg update
 > - opkg install shadowsocks-libev-ss-redir
-##### Config your ss
-> vi /opt/etc/shadowsocks.json 
-> input your ss config,keep ss local port 1080
 ### Quick install
 > - Login your router using SSH, change directory to /opt/etc
-> - curl https://raw.githubusercontent.com/xckai/merlin-ss/master/install.sh | sh
+> - curl https://raw.githubusercontent.com/xckai/merlin-ss/master/getSS.sh | sh
 
 
 ### Quick start
-  - using `ss.sh gfwmode `to start (!!! if you using chinamode, you should add your ss-server ip into dst2proxy file)
-  - you could add update.sh in to a crontab task ,it will update both gfwlist and adblock list by scheduled.
-  - you could edit dst2proxy/dst2direct file to custom your router rules.
-  - all the domain in proxy.domain file will focused using ss proxy.
+  - config your shadowsocks' server ,password and encryption method;
+  - config your own rules[option] 
+    - dst2direct.ip : ip list,router will not proxy those ip ;
+    - dst2proxy.ip: ip list, router will proxy those ip;
+    - proxy.domain: domain list, router will proxy those domain;
+  - using `./shadowsocks.sh updateGFWFile` to update your local GFW rules;
+  - using `./shadowsocks.sh updateCustomProxy` to update your own rules;
+  - using `./shadowsocks.sh startRouter` to config router's iptables;
+  - using `./shadowsocks.sh startSS` to start shadowsock's process;
+  - using `./shadowsocks.sh` show the help file.
+
 ### Feature
-  - support gfwmode and chinaroute mode
+  - support gfwmode mode
   - disable adblock because the domain_block file is too large, it cost too mush resource and suspend the DNSMASQ service. Recommand using pi-hole instead.
