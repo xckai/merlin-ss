@@ -10,6 +10,7 @@
 > - Login router using SSH
 > - opkg update
 > - opkg install shadowsocks-libev-ss-redir
+> - opkg install shadowsocks-libev-ss-tunnel
 ### Quick install
 > - Login your router using SSH, change directory to /opt/etc
 > - curl https://raw.githubusercontent.com/xckai/merlin-ss/master/getSS.sh | sh
